@@ -508,7 +508,6 @@ const LandingPage = ({ onEnroll }) => {
 
   const faqs = [
     { q: "Do I need any prior writing or music experience?", a: "No! We teach from scratch. Whether you're a complete beginner or have some experience, this course is designed to meet you where you are." },
-    { q: "How long do I have access to the course?", a: "You get 2 years of full access to all course materials, including 104 live sessions with instructor support." },
     { q: "What if I'm not satisfied with the course?", a: "We offer a 7-day risk-free refund policy. If you're not satisfied, we'll refund your full payment." },
     { q: "Can I use these skills professionally?", a: "Absolutely! Many students use these skills for church ministry, freelance work, and professional content creation roles." },
     { q: "Do I need expensive software or equipment?", a: "No. We'll show you how to use free and affordable tools. All you need is a computer and internet connection." }
@@ -615,8 +614,8 @@ const LandingPage = ({ onEnroll }) => {
               </div>
               <div className="group bg-white/10 backdrop-blur-md px-5 py-2.5 rounded-full border border-indigo-400/50 hover:border-indigo-400 transition-all hover:scale-105 cursor-pointer shadow-lg hover:shadow-indigo-500/50">
                 <span className="text-white font-semibold text-sm flex items-center gap-2">
-                  <Video className="w-4 h-4 text-indigo-400 animate-pulse" style={{animationDelay: '1s'}} />
-                  104 Live Sessions
+                  <BookOpen className="w-4 h-4 text-indigo-400 animate-pulse" style={{animationDelay: '1s'}} />
+                  Complete Course
                 </span>
               </div>
             </div>
@@ -1397,7 +1396,7 @@ const LandingPage = ({ onEnroll }) => {
               </div>
               <div className="group">
                 <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-pink-400/50 transition-all duration-300 hover:scale-105">
-                  <div className="text-4xl font-black text-pink-400 mb-2">104</div>
+                  <div className="text-4xl font-black text-pink-400 mb-2">8 Weeks</div>
                   <div className="text-gray-300 text-sm">Live Sessions</div>
                 </div>
               </div>
