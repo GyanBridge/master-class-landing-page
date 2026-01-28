@@ -202,8 +202,21 @@ import { BookOpen, Sparkles, CheckCircle, Download, User, ArrowRight, Check} fro
 
 // Receipt Page Component
 const ReceiptPage = ({ data }) => {
-  const downloadReceipt = () => {
-    generatePDFReceipt(data);
+  const downloadReceipt = async () => {
+    try {
+      const result = await generatePDFReceipt({
+        ...data,
+        transactionId: data.razorpay_payment_id || data.transactionId || 'N/A',
+        countryCode: data.countryCode || '+91'
+      });
+      
+      if (!result.success) {
+        alert('Failed to generate PDF: ' + result.error);
+      }
+    } catch (error) {
+      console.error('PDF generation error:', error);
+      alert('Failed to generate PDF. Please try again.');
+    }
   };
 
   return (
@@ -263,8 +276,8 @@ const ReceiptPage = ({ data }) => {
                   <span className="font-medium text-gray-900">2 Years</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Live Sessions:</span>
-                  <span className="font-medium text-gray-900">104 Sessions</span>
+                  <span className="text-gray-600">Duration:</span>
+                  <span className="font-medium text-gray-900">8 Weeks</span>
                 </div>
               </div>
             </div>
@@ -303,7 +316,7 @@ const ReceiptPage = ({ data }) => {
               <div className="grid sm:grid-cols-2 gap-3">
                 <div className="flex items-center gap-2 text-gray-700">
                   <Check className="w-5 h-5 text-green-600" />
-                  <span>104 Live Sessions</span>
+                  <span>Complete Course Materials</span>
                 </div>
                 <div className="flex items-center gap-2 text-gray-700">
                   <Check className="w-5 h-5 text-green-600" />

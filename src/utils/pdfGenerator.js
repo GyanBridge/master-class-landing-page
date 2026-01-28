@@ -27,223 +27,132 @@ export const loadJsPDF = () => {
  */
 export const generateReceiptPDF = async (receiptData) => {
   try {
-    const { jsPDF } = await loadJsPDF();
+    // Try to load jsPDF
+    let jsPDF;
+    if (window.jspdf) {
+      jsPDF = window.jspdf.jsPDF;
+    } else {
+      // Load jsPDF dynamically
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      document.head.appendChild(script);
+      
+      await new Promise((resolve, reject) => {
+        script.onload = () => {
+          if (window.jspdf) {
+            jsPDF = window.jspdf.jsPDF;
+            resolve();
+          } else {
+            reject(new Error('jsPDF not loaded'));
+          }
+        };
+        script.onerror = () => reject(new Error('Failed to load jsPDF'));
+      });
+    }
+
+    if (!jsPDF) {
+      throw new Error('jsPDF library not available');
+    }
+
     const doc = new jsPDF();
     
     const {
-      orderId,
-      transactionId,
-      fullName,
-      email,
-      phone,
-      countryCode,
-      amount,
-      upgradeSelected,
-      date,
-      paymentMethod
+      orderId = 'N/A',
+      transactionId = 'N/A',
+      fullName = 'N/A',
+      email = 'N/A',
+      phone = 'N/A',
+      countryCode = '+91',
+      amount = '99',
+      upgradeSelected = false,
+      date = new Date().toLocaleString(),
+      paymentMethod = 'Razorpay'
     } = receiptData;
 
-    // Page dimensions
-    const pageWidth = doc.internal.pageSize.width;
-    const margin = 20;
-    let yPosition = 20;
-
-    // Helper function to add text
-    const addText = (text, x, y, options = {}) => {
-      doc.setFontSize(options.fontSize || 12);
-      doc.setFont(options.font || 'helvetica', options.style || 'normal');
-      doc.text(text, x, y);
-    };
-
-    // Helper function to draw line
-    const drawLine = (y) => {
-      doc.setDrawColor(200, 200, 200);
-      doc.line(margin, y, pageWidth - margin, y);
-    };
-
-    // ==================== HEADER ====================
-    // Company Logo/Name
-    doc.setFillColor(139, 92, 246); // Purple
-    doc.rect(margin, yPosition, pageWidth - 2 * margin, 25, 'F');
+    // Simple PDF layout
+    let y = 20;
     
-    doc.setTextColor(255, 255, 255);
-    addText('GyanBridge', pageWidth / 2, yPosition + 6, {
-      fontSize: 18,
-      style: 'bold'
-    });
-    addText('Script Writing Masterclass', pageWidth / 2, yPosition + 14, {
-      fontSize: 14,
-      style: 'normal'
-    });
-    addText('Payment Receipt', pageWidth / 2, yPosition + 20, {
-      fontSize: 12,
-      style: 'normal'
-    });
-    doc.setTextColor(0, 0, 0);
+    // Header
+    doc.setFontSize(20);
+    doc.setFont('helvetica', 'bold');
+    doc.text('GyanBridge', 105, y, { align: 'center' });
+    y += 10;
     
-    yPosition += 35;
-
-    // Receipt Number and Date
-    doc.setFillColor(245, 245, 245);
-    doc.rect(margin, yPosition, pageWidth - 2 * margin, 20, 'F');
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Payment Receipt', 105, y, { align: 'center' });
+    y += 20;
     
-    addText(`Receipt #: ${orderId}`, margin + 5, yPosition + 8, { fontSize: 10 });
-    addText(`Date: ${date}`, margin + 5, yPosition + 15, { fontSize: 10 });
+    // Receipt details
+    doc.setFontSize(12);
+    doc.text(`Receipt #: ${orderId}`, 20, y);
+    doc.text(`Date: ${date}`, 150, y);
+    y += 20;
     
-    yPosition += 30;
-
-    // ==================== CUSTOMER DETAILS ====================
-    addText('CUSTOMER DETAILS', margin, yPosition, {
-      fontSize: 14,
-      style: 'bold'
-    });
-    yPosition += 8;
-    drawLine(yPosition);
-    yPosition += 10;
-
-    addText(`Name: ${fullName}`, margin, yPosition);
-    yPosition += 7;
-    addText(`Email: ${email}`, margin, yPosition);
-    yPosition += 7;
-    addText(`Phone: ${countryCode} ${phone}`, margin, yPosition);
-    yPosition += 15;
-
-    // ==================== COURSE DETAILS ====================
-    addText('COURSE DETAILS', margin, yPosition, {
-      fontSize: 14,
-      style: 'bold'
-    });
-    yPosition += 8;
-    drawLine(yPosition);
-    yPosition += 10;
-
-    addText('Course Name:', margin, yPosition, { style: 'bold' });
-    yPosition += 7;
-    addText('GyanBridge - Christian Script Writing & Creative Ministry Class', margin, yPosition, {
-      fontSize: 11
-    });
-    yPosition += 10;
-
-    addText('Duration: Self-paced', margin, yPosition);
-    yPosition += 7;
-    addText('Access Period: 2 Years', margin, yPosition);
-    yPosition += 7;
-    addText('Live Sessions: 104 Sessions', margin, yPosition);
-    yPosition += 15;
-
-    // ==================== PAYMENT DETAILS ====================
-    addText('PAYMENT DETAILS', margin, yPosition, {
-      fontSize: 14,
-      style: 'bold'
-    });
-    yPosition += 8;
-    drawLine(yPosition);
-    yPosition += 10;
-
-    // Payment breakdown
-    doc.setFillColor(240, 253, 244); // Light green
-    doc.rect(margin, yPosition, pageWidth - 2 * margin, 45, 'F');
+    // Customer details
+    doc.setFont('helvetica', 'bold');
+    doc.text('Customer Details:', 20, y);
+    y += 10;
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Name: ${fullName}`, 20, y);
+    y += 7;
+    doc.text(`Email: ${email}`, 20, y);
+    y += 7;
+    doc.text(`Phone: ${countryCode} ${phone}`, 20, y);
+    y += 20;
     
-    yPosition += 8;
+    // Course details
+    doc.setFont('helvetica', 'bold');
+    doc.text('Course Details:', 20, y);
+    y += 10;
+    doc.setFont('helvetica', 'normal');
+    doc.text('Course: GyanBridge - Script Writing Masterclass', 20, y);
+    y += 7;
+    doc.text('Access Period: 2 Years', 20, y);
+    y += 7;
+    doc.text('Duration: 8 Weeks', 20, y);
+    y += 20;
     
-    const labelX = margin + 5;
-    const valueX = pageWidth - margin - 5;
+    // Payment details
+    doc.setFont('helvetica', 'bold');
+    doc.text('Payment Details:', 20, y);
+    y += 10;
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Amount Paid: ₹${amount}`, 20, y);
+    y += 7;
+    doc.text(`Payment Method: ${paymentMethod}`, 20, y);
+    y += 7;
+    doc.text(`Transaction ID: ${transactionId}`, 20, y);
+    y += 20;
     
-    addText('Amount Paid:', labelX, yPosition);
-    addText(`₹${amount}`, valueX, yPosition, {
-      style: 'bold',
-      fontSize: 14
-    });
-    yPosition += 10;
-    
-    addText('Payment Method:', labelX, yPosition);
-    addText(paymentMethod, valueX, yPosition);
-    yPosition += 10;
-    
-    addText('Transaction ID:', labelX, yPosition);
-    addText(transactionId, valueX, yPosition, { fontSize: 10 });
-    yPosition += 10;
-    
-    if (upgradeSelected) {
-      addText('Package:', labelX, yPosition);
-      addText('Premium Upgrade ✓', valueX, yPosition, {
-        style: 'bold'
-      });
-      yPosition += 10;
-    }
-    
-    yPosition += 10;
-
-    // ==================== INCLUSIONS ====================
-    addText('WHAT\'S INCLUDED', margin, yPosition, {
-      fontSize: 14,
-      style: 'bold'
-    });
-    yPosition += 8;
-    drawLine(yPosition);
-    yPosition += 10;
-
+    // Inclusions
+    doc.setFont('helvetica', 'bold');
+    doc.text('What\'s Included:', 20, y);
+    y += 10;
+    doc.setFont('helvetica', 'normal');
     const inclusions = [
-      '✓ 104 Live Sessions with Instructor',
-      '✓ 2 Year Course Validity',
-      '✓ 7-Day Risk Free Refund Policy',
-      '✓ Certificate of Completion',
-      '✓ Community Access & Support',
-      '✓ Lifetime Learning Resources'
+      '✓ Complete Course Materials',
+      '✓ 2 Year Access',
+      '✓ 7-Day Refund Policy',
+      '✓ Certificate of Completion'
     ];
-
-    inclusions.forEach(inclusion => {
-      addText(inclusion, margin + 5, yPosition, { fontSize: 11 });
-      yPosition += 7;
-    });
-
-    yPosition += 15;
-
-    // ==================== FOOTER ====================
-    // Thank you message
-    doc.setFillColor(245, 245, 245);
-    doc.rect(margin, yPosition, pageWidth - 2 * margin, 25, 'F');
     
-    doc.setTextColor(139, 92, 246); // Purple
-    addText('Thank you for enrolling!', pageWidth / 2, yPosition + 10, {
-      fontSize: 14,
-      style: 'bold'
-    });
-    doc.setTextColor(0, 0, 0);
-    
-    addText('Welcome to the Script Writing Masterclass community', pageWidth / 2, yPosition + 18, {
-      fontSize: 10
+    inclusions.forEach(item => {
+      doc.text(item, 20, y);
+      y += 7;
     });
     
-    yPosition += 35;
-
-    // Support information
-    addText('Need help? Contact us:', margin, yPosition, { fontSize: 10 });
-    yPosition += 6;
-    doc.setTextColor(37, 99, 235); // Blue
-    addText('support@GyanBridge.com', margin, yPosition, {
-      fontSize: 10,
-      style: 'bold'
-    });
-    doc.setTextColor(0, 0, 0);
-    yPosition += 6;
-    doc.setTextColor(37, 99, 235);
-    addText('+91 91370 23462', margin, yPosition, {
-      fontSize: 10,
-      style: 'bold'
-    });
-    doc.setTextColor(0, 0, 0);
-
-    // Footer line
-    yPosition = doc.internal.pageSize.height - 20;
-    drawLine(yPosition);
-    yPosition += 6;
-    addText('© 2025 GyanBridge. All rights reserved.', pageWidth / 2, yPosition, {
-      fontSize: 8
-    });
-
+    y += 20;
+    
+    // Footer
+    doc.setFont('helvetica', 'bold');
+    doc.text('Thank you for enrolling!', 105, y, { align: 'center' });
+    y += 10;
+    doc.setFont('helvetica', 'normal');
+    doc.text('Support: support@GyanBridge.in | +91 91370 23462', 105, y, { align: 'center' });
+    
     // Save the PDF
-    doc.save(`Receipt-${orderId}.pdf`);
+    doc.save(`GyanBridge-Receipt-${orderId}.pdf`);
     
     return {
       success: true,

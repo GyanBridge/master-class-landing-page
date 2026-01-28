@@ -248,7 +248,7 @@ import {
 //   );
 // };
 // Checkout Page Component
-const CheckoutPage = ({ onBack, onSuccess }) => {
+const CheckoutPage = ({ onBack, onSuccess, selectedClass }) => {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -259,6 +259,22 @@ const CheckoutPage = ({ onBack, onSuccess }) => {
   const [errors, setErrors] = useState({});
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorModal, setErrorModal] = useState({ show: false, message: '', title: '' });
+
+  // Class configurations
+  const classConfig = {
+    'script-writing': {
+      title: 'GyanBridge - Script Writing Masterclass',
+      price: 99,
+      originalPrice: 1999
+    },
+    'spoken-english': {
+      title: 'Spoken English Coaching',
+      price: 499,
+      originalPrice: 2999
+    }
+  };
+
+  const currentClass = classConfig[selectedClass] || classConfig['script-writing'];
 
   const validateForm = () => {
     const newErrors = {};
@@ -296,14 +312,17 @@ const CheckoutPage = ({ onBack, onSuccess }) => {
     
     try {
       await initiateRazorpayPayment({
-        amount: 99,
+        amount: currentClass.price,
         customerData: formData,
+        courseType: selectedClass,
         onSuccess: (paymentData) => {
           const completePaymentData = {
             ...paymentData,
             orderId: 'ORD' + Date.now(),
             date: new Date().toLocaleString(),
-            paymentMethod: 'Razorpay'
+            paymentMethod: 'Razorpay',
+            courseType: selectedClass,
+            courseTitle: currentClass.title
           };
           onSuccess(completePaymentData);
           setIsProcessing(false);
@@ -319,8 +338,7 @@ const CheckoutPage = ({ onBack, onSuccess }) => {
     }
   };
 
-  const basePrice = 99;
-  const finalPrice = basePrice;
+  const finalPrice = currentClass.price;
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -328,7 +346,7 @@ const CheckoutPage = ({ onBack, onSuccess }) => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              GyanBridge - Christian Script Writing <span className="text-red-500">Masterclass</span>
+              {currentClass.title}
             </h1>
             <p className="text-gray-600">Complete your enrollment</p>
           </div>
@@ -426,8 +444,16 @@ const CheckoutPage = ({ onBack, onSuccess }) => {
                 
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-gray-700">
-                    <span>GyanBridge - Script Writing Masterclass</span>
-                    <span className="font-semibold">₹{basePrice}</span>
+                    <span>{currentClass.title}</span>
+                    <span className="font-semibold">₹{currentClass.price}</span>
+                  </div>
+                  <div className="flex justify-between text-gray-500 text-sm">
+                    <span>Original Price</span>
+                    <span className="line-through">₹{currentClass.originalPrice}</span>
+                  </div>
+                  <div className="flex justify-between text-green-600 font-semibold">
+                    <span>You Save</span>
+                    <span>₹{currentClass.originalPrice - currentClass.price}</span>
                   </div>
                 </div>
 

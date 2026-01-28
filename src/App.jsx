@@ -38,26 +38,43 @@ import React, { useState } from 'react';
 import LandingPage from './pages/LandingPage';
 import CheckoutPage from './pages/CheckoutPage';
 import ReceiptPage from './pages/ReceiptPage';
-
+import SpokenEnglishLanding from './pages/SpokenEnglishLanding';
+import ClassSelector from './pages/ClassSelector';
 
 // Main App Component
 const App = () => {
-  const [currentPage, setCurrentPage] = useState('landing');
+  const [currentPage, setCurrentPage] = useState('selector');
+  const [selectedClass, setSelectedClass] = useState(null);
   const [enrollmentData, setEnrollmentData] = useState(null);
 
   const renderPage = () => {
     switch(currentPage) {
-      case 'landing':
-        return <LandingPage onEnroll={() => setCurrentPage('checkout')} />;
-      case 'checkout':
-        return <CheckoutPage onBack={() => setCurrentPage('landing')} onSuccess={(data) => {
-          setEnrollmentData(data);
-          setCurrentPage('receipt');
+      case 'selector':
+        return <ClassSelector onSelectClass={(classType) => {
+          setSelectedClass(classType);
+          setCurrentPage('landing');
         }} />;
+      case 'landing':
+        if (selectedClass === 'spoken-english') {
+          return <SpokenEnglishLanding onEnroll={() => setCurrentPage('checkout')} onBack={() => setCurrentPage('selector')} />;
+        }
+        return <LandingPage onEnroll={() => setCurrentPage('checkout')} onBack={() => setCurrentPage('selector')} />;
+      case 'checkout':
+        return <CheckoutPage 
+          selectedClass={selectedClass}
+          onBack={() => setCurrentPage('landing')} 
+          onSuccess={(data) => {
+            setEnrollmentData(data);
+            setCurrentPage('receipt');
+          }} 
+        />;
       case 'receipt':
         return <ReceiptPage data={enrollmentData} />;
       default:
-        return <LandingPage onEnroll={() => setCurrentPage('checkout')} />;
+        return <ClassSelector onSelectClass={(classType) => {
+          setSelectedClass(classType);
+          setCurrentPage('landing');
+        }} />;
     }
   };
 

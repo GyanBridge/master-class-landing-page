@@ -398,7 +398,7 @@ import {
   Mail, Phone, User, ArrowRight, Check, Award, Clock, Users
 } from 'lucide-react';
 
-const LandingPage = ({ onEnroll }) => {
+const LandingPage = ({ onEnroll, onBack }) => {
   const [activeAccordion, setActiveAccordion] = useState(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -515,6 +515,18 @@ const LandingPage = ({ onEnroll }) => {
 
   return (
     <div className="bg-white relative">
+      {/* Back Button */}
+      {onBack && (
+        <div className="fixed top-4 left-4 z-50">
+          <button
+            onClick={onBack}
+            className="bg-white/90 backdrop-blur-md border border-gray-200 text-gray-700 px-4 py-2 rounded-full font-medium hover:bg-white transition-all shadow-lg"
+          >
+            ← Back to Courses
+          </button>
+        </div>
+      )}
+
       {/* Sticky Bottom CTA */}
       <div className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t-4 border-red-500 z-50 shadow-2xl">
         <div className="container mx-auto px-4 py-3">
