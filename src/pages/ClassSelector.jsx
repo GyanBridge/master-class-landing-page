@@ -5,22 +5,23 @@ const ClassSelector = ({ onSelectClass }) => {
   const classes = [
     {
       id: 'script-writing',
-      title: 'Christian Script Writing',
-      subtitle: 'Master the Art of Biblical Storytelling',
+      title: 'Script Writing',
+      subtitle: 'Registration Closed',
       price: 99,
       originalPrice: 1999,
-      description: 'Learn to write powerful Christian scripts, worship songs, and ministry content with AI tools',
+      description: 'Registration for this course has ended. Stay tuned for the next batch!',
       features: [
-        'Biblical Script Writing Fundamentals',
-        'Christian Music & Worship Creation',
-        'AI Tools for Ministry Content',
-        'Social Media Ministry Growth'
+        'Script Writing Fundamentals',
+        'Music & Worship Creation',
+        'AI Tools for Content',
+        'Social Media Growth'
       ],
       icon: BookOpen,
-      gradient: 'from-purple-500 to-pink-500',
-      bgGradient: 'from-purple-50 to-pink-50',
+      gradient: 'from-gray-400 to-gray-500',
+      bgGradient: 'from-gray-50 to-gray-100',
       students: '47K+',
-      rating: '4.9'
+      rating: '4.9',
+      disabled: true
     },
     {
       id: 'spoken-english',
@@ -125,11 +126,12 @@ const ClassSelector = ({ onSelectClass }) => {
 
                 {/* CTA Button */}
                 <button
-                  onClick={() => onSelectClass(classItem.id)}
-                  className={`w-full bg-gradient-to-r ${classItem.gradient} text-white py-4 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center gap-3 group/btn`}
+                  onClick={() => classItem.disabled ? null : onSelectClass(classItem.id)}
+                  disabled={classItem.disabled}
+                  className={`w-full ${classItem.disabled ? 'bg-gray-400 cursor-not-allowed' : `bg-gradient-to-r ${classItem.gradient} hover:scale-105 hover:shadow-xl`} text-white py-4 rounded-2xl font-bold text-lg transition-all duration-300 flex items-center justify-center gap-3 group/btn`}
                 >
-                  <span>Choose This Course</span>
-                  <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                  <span>{classItem.disabled ? 'Registration Closed' : 'Choose This Course'}</span>
+                  {!classItem.disabled && <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />}
                 </button>
               </div>
             </div>

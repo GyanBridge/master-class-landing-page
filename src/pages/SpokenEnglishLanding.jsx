@@ -116,7 +116,7 @@ const SpokenEnglishLanding = ({ onEnroll, onBack }) => {
     { q: "Do I need any prior English knowledge?", a: "Basic English knowledge is helpful, but we teach from intermediate to advanced levels. Our course is designed to take you from hesitant speaking to fluent communication." },
     { q: "How long will it take to see results?", a: "Most students see significant improvement in confidence and fluency within 2-3 weeks of consistent practice." },
     { q: "Is this suitable for working professionals?", a: "Absolutely! The course is specifically designed for working professionals who want to excel in their careers through better English communication." },
-    { q: "Do I get lifetime access to materials?", a: "Yes, you get 2 years of full access to all course materials, live sessions, and practice resources." }
+    { q: "Do I get lifetime access to materials?", a: "You get 1 year of full access to all course materials and live sessions. No refunds are available once enrolled." }
   ];
 
   return (
@@ -273,15 +273,15 @@ const SpokenEnglishLanding = ({ onEnroll, onBack }) => {
               </div>
               <div className="w-px bg-gradient-to-b from-transparent via-white/30 to-transparent"></div>
               <div className="group hover:scale-110 transition-transform cursor-pointer">
-                <div className="text-5xl font-black mb-2 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">2 Years</div>
+                <div className="text-5xl font-black mb-2 bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">1 Year</div>
                 <div className="text-sm text-gray-300 font-medium">Full Access</div>
                 <div className="w-16 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 mx-auto mt-2 rounded-full group-hover:w-20 transition-all"></div>
               </div>
               <div className="w-px bg-gradient-to-b from-transparent via-white/30 to-transparent"></div>
               <div className="group hover:scale-110 transition-transform cursor-pointer">
-                <div className="text-5xl font-black mb-2 bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">7 Days</div>
-                <div className="text-sm text-gray-300 font-medium">Money Back</div>
-                <div className="w-16 h-1 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto mt-2 rounded-full group-hover:w-20 transition-all"></div>
+                <div className="text-5xl font-black mb-2 bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent">No Refund</div>
+                <div className="text-sm text-gray-300 font-medium">Policy</div>
+                <div className="w-16 h-1 bg-gradient-to-r from-red-500 to-pink-500 mx-auto mt-2 rounded-full group-hover:w-20 transition-all"></div>
               </div>
             </div>
 
@@ -646,14 +646,14 @@ const SpokenEnglishLanding = ({ onEnroll, onBack }) => {
               </div>
               <div className="group">
                 <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-blue-400/50 transition-all duration-300 hover:scale-105">
-                  <div className="text-4xl font-black text-blue-400 mb-2">2 Years</div>
+                  <div className="text-4xl font-black text-blue-400 mb-2">1 Year</div>
                   <div className="text-gray-300 text-sm">Full Access</div>
                 </div>
               </div>
               <div className="group">
-                <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-indigo-400/50 transition-all duration-300 hover:scale-105">
-                  <div className="text-4xl font-black text-indigo-400 mb-2">8 Weeks</div>
-                  <div className="text-gray-300 text-sm">Live Sessions</div>
+                <div className="bg-white/5 backdrop-blur-md rounded-2xl p-6 border border-white/10 hover:border-red-400/50 transition-all duration-300 hover:scale-105">
+                  <div className="text-4xl font-black text-red-400 mb-2">No Refund</div>
+                  <div className="text-gray-300 text-sm">Policy</div>
                 </div>
               </div>
             </div>
