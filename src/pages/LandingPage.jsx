@@ -1478,8 +1478,8 @@ const LandingPage = ({ onEnroll, onBack }) => {
                     <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-purple-500 rounded-lg flex items-center justify-center">
                       <Mail className="w-4 h-4 text-white" />
                     </div>
-                    <a href="mailto:support@GyanBridge.com" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                      support@GyanBridge.in
+                    <a href="mailto:support@gyanbridge.in" className="text-gray-300 hover:text-cyan-400 transition-colors">
+                      support@gyanbridge.in
                     </a>
                   </div>
                   <div className="flex items-center gap-3 group">

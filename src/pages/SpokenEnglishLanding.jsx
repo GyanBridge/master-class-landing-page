@@ -690,8 +690,8 @@ const SpokenEnglishLanding = ({ onEnroll, onBack }) => {
                     <div className="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center">
                       <span className="text-white text-xs">@</span>
                     </div>
-                    <a href="mailto:support@spokenenglish.com" className="text-gray-300 hover:text-cyan-400 transition-colors">
-                      support@spokenenglish.com
+                    <a href="mailto:support@gyanbridge.in" className="text-gray-300 hover:text-cyan-400 transition-colors">
+                      support@gyanbridge.in
                     </a>
                   </div>
                 </div>
